@@ -1,9 +1,9 @@
 #!/bin/bash
 BUILD_DIR=$1
-TESSERACT_OCR_VERSION=3.03
-TESSERACT_OCR_DATA_VERSION=3.02
+TESSERACT_OCR_VERSION=4.10
+TESSERACT_OCR_DATA_VERSION=4.10
 
-TESSERACT_OCR_TGZ=tesseract-ocr-$TESSERACT_OCR_VERSION.tar.gz
+TESSERACT_OCR_TGZ=tesseract-$TESSERACT_OCR_VERSION.tar.gz
 
 INSTALL_DIR=$BUILD_DIR/vendor/tesseract-ocr/
 INSTALL_DIR_TRAINING_DATA=$BUILD_DIR/vendor/
@@ -16,19 +16,19 @@ echo "Unpacking Tesseract-OCR binaries"
 mkdir -p $INSTALL_DIR
 tar -zxvf $TESSERACT_OCR_TGZ -C $INSTALL_DIR
 
-echo 'Getting Tesseract-OCR training data'
-if [ $TESSERACT_OCR_LANGUAGES ]
-then
-   array=(${TESSERACT_OCR_LANGUAGES//,/ })
-   for i in "${!array[@]}"
-   do
-     lang="${array[i]}"
-     echo $lang 'training data'
-     curl http://pkgs.fedoraproject.org/repo/pkgs/tesseract/tesseract-ocr-3.02.eng.tar.gz/md5/3562250fe6f4e76229a329166b8ae853/tesseract-ocr-$TESSERACT_OCR_DATA_VERSION.$lang.tar.gz \
-  -o - | tar -xz -C $INSTALL_DIR_TRAINING_DATA -f -
+# echo 'Getting Tesseract-OCR training data'
+# if [ $TESSERACT_OCR_LANGUAGES ]
+# then
+#    array=(${TESSERACT_OCR_LANGUAGES//,/ })
+#    for i in "${!array[@]}"
+#    do
+#      lang="${array[i]}"
+#      echo $lang 'training data'
+#      curl https://github.com/dphang/heroku-buildpack-tesseract/blob/master/tesseract-4.1.0.tar.gz?raw=true \
+#   -o - | tar -xz -C $INSTALL_DIR_TRAINING_DATA -f -
 
-   done
-fi
+#    done
+# fi
 
 echo "Building runtime environment for Tesseract-OCR"
 mkdir -p $BUILD_DIR/.profile.d
